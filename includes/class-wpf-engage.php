@@ -9,6 +9,7 @@ class WPF_Engage {
 	 * @since x.x.x
 	 */
 
+	// public $url = 'https://d6e2-102-67-0-124.ngrok.io';
 	public $url = 'https://api.engage.so';
 
 	/**
@@ -616,44 +617,45 @@ class WPF_Engage {
 	 * @param  bool|string $email_address The user email address.
 	 * @return bool|WP_Error True if success, WP_Error if failed.
 	 */
-	/*
 	public function track_event( $event, $event_data = false, $email_address = false ) {
 
-		if ( empty( $email_address ) && ! wpf_is_user_logged_in() ) {
-			// Tracking only works if WP Fusion knows who the contact is.
+		// Get the email address to track.
+
+		if ( empty( $email_address ) ) {
+			$email_address = wpf_get_current_user_email();
+		}
+
+		if ( false === $email_address ) {
+			return; // can't track without an email.
+		}
+
+		$contact_id = $this->get_contact_id( $email_address );
+
+		if ( ! $contact_id ) {
 			return;
 		}
 
-		// Get the email address to track.
-		if ( empty( $email_address ) ) {
-			$user          = wpf_get_current_user();
-			$email_address = $user->user_email;
-		}
-
-		// Todo: get id from email
-
-		$data = array(
-			'event' => sanitize_title( $event ),
-			'properties' => $event_data
+		$body = array(
+			'event' => $event
 		);
+
 		if ( is_object( json_decode( $event_data ) ) ) {
-			$data['properties'] = json_decode( $event_data , true);
+			$body['properties'] = json_decode( $event_data );
 		} else {
-			$data['value'] = $event_data;
+			$body['value'] = $event_data;
 		}
 
-		$request            = $this->url . '/v1/users/' . $contact_id . '/events';
-		$params             = $this->get_params();
-		$params['body']     = wp_json_encode( $data );
-		$params['blocking'] = false;
+		$request        = $this->url . '/v1/users/' . $contact_id . '/events';
+		$params         = $this->get_params();
+		$params['body'] = wp_json_encode( $body );
 
 		$response = wp_safe_remote_post( $request, $params );
 
 		if ( is_wp_error( $response ) ) {
+			wpf_log( 'error', 0, 'Error tracking event: ' . $response->get_error_message() );
 			return $response;
 		}
 
 		return true;
 	}
-	*/
 }

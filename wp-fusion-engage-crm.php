@@ -4,7 +4,7 @@
 Plugin Name: WP Fusion - Engage CRM
 Description: Boostrap for connecting WP Fusion to a custom CRM
 Plugin URI: https://engage.so/
-Version: 1.0.0
+Version: 1.0.1
 Author: Engage Messaging
 Author URI: https://engage.so/
 */

@@ -24,8 +24,7 @@ class WPF_Engage {
 	 * @var array
 	 * @since x.x.x
 	 */
-
-	public $supports = array();
+	public $supports = array( 'events' );
 
 	/**
 	 * API parameters
